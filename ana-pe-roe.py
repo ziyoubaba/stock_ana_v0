@@ -9,11 +9,11 @@ class Ana_pe_roe():
     def __init__(self):
         # self.hs_stocks = pd.read_csv('./data/HS_stocks_basic_info.csv', dtype={"code": np.str})
         # self.hs_stocks = pd.read_csv('./data/HS_stocks_2017_09_21.csv', dtype={"code": np.str})
-        self.hs_stocks = pd.read_csv('./data/HS_stocks_2017_09_24.csv', dtype={"code": np.str})
+        self.hs_stocks = pd.read_csv('./data/HS_stocks_2017_11_14.csv', dtype={"code": np.str})
         self.season_report = pd.read_csv("./data/report_data/report_data.csv", dtype={"code": np.str}, index_col=0)
 
-        self.min_season = 20163    # 在此之后的市盈率
-        self.max_season = 20172    # 在此之后的市盈率
+        self.min_season = 20164    # 在此之后的市盈率
+        self.max_season = 20173    # 在此之后的市盈率
         self.season_list = []
         min_year , min_season = int(str(self.min_season)[:-1]),int(str(self.min_season)[-1])
         for year in range(min_year,2018):
@@ -48,7 +48,7 @@ class Ana_pe_roe():
             _bvps = a_stock["bvps"] # 每股净资产
 
             try:
-                _price_pe = _pe *_eps # 根据市盈率计算股价
+                _price_pe = _pe *_eps # 根据市盈率计算股价   # 这里的pe貌似不是实时的pe 很奇怪 这里计算出的股价是不精确的
             except:
                 _price_pe = ''
 
@@ -59,10 +59,11 @@ class Ana_pe_roe():
 
             # roe 当前每股净资产收益率
             try:
-                _roe_now = 100 * _pb / _pe*2    # 这里pe貌似是错误的，除以2就正常了许多
+                _roe_now = 100 * _pb / _pe    # 这里的pe貌似不是实时的pe 很奇怪 这里计算出的股价是不精确的
             except:
                 _roe_now = ''
-            a_pe_roe.extend([_code,_name,_industry,_area,_pe ,_eps, _pb , _bvps,_price_pe , _price_pb,_roe_now])
+            # a_pe_roe.extend([_code,_name,_industry,_area,_pe ,_eps, _pb , _bvps,_price_pe , _price_pb,_roe_now])
+            a_pe_roe.extend([_code,_name,_industry,_area,_pe ,_eps, _pb , _bvps, "右边股价" , _price_pb,_roe_now])
             # 从财务报告筛选出股票近四个季度的roe
             _roe = self.season_report[(self.season_report.code == _code) & (self.season_report.season >= self.min_season)][["roe", "season"]]
             roe_dic = {}

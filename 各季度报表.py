@@ -27,7 +27,7 @@ def season_report(year,which_season,tocsv=True):
 # download season_report of many years
 def season_report_downloader():
     for a_year in range(2017,2018):
-        for season in range(1,5):
+        for season in range(3,5):
             season_report(a_year , season)
 
 import os
